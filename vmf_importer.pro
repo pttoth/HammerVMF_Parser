@@ -4,4 +4,10 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+        vmfelements.cpp \
+        vmfimporter.cpp
+
+HEADERS += \
+    vmfelements.h \
+    vmfimporter.h
