@@ -9,7 +9,6 @@ INCLUDEPATH += \
 
 SOURCES += \
         main.cpp \
-        vmfelements.cpp \
         vmfimporter.cpp
 
 HEADERS += \
