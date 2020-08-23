@@ -48,7 +48,7 @@ struct Side: public Element
 
 struct Solid: public Element, public HasEditorProperties
 {
-    std::vector<Side> sides;
+    std::vector<Side*> sides;
 
 
 };
@@ -97,19 +97,19 @@ struct World: public Element, public HasEditorProperties
     //???                   maxpropscreenwidth; // -1
     std::string             detailvbsp;
     std::string             detailmaterial;
-    std::vector<Solid>      solids;
+    std::vector<Solid*>     solids;
 
 };
 
-struct VMFScene{
+struct Scene{
     //versioninfo
     //visgroups
     //viewsettings
 
-    World                world;
+    World*               world;
     std::vector<Entity>  entities;
-    Cameras              cameras;
-    Cordon               cordon;
+    Cameras*             cameras;
+    Cordon*              cordon;
 
 };
 

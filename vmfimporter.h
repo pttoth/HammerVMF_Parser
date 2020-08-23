@@ -1,39 +1,66 @@
 #pragma once
 
 #include "vmfelements.h"
+#include "pt/event.hpp"
+
+#include "sstream"
 
 namespace VMF{
-
-class VMFImportJobResult
-{
-public:
-    VMFImportJobResult(int32_t id);
-    int32_t         getID() const;
-    std::string&    getResult() const;
-
-private:
-    int32_t         _id;
-    std::string     _result;
-
-
-};
 
 class VMFImporter
 {
 public:
+    struct JobResult
+    {
+        JobResult(const std::string filename):
+            path(filename),
+            scene(nullptr)
+        {
+        }
+
+        bool isSuccessful() const{
+            return scene != nullptr;
+        }
+
+        const std::string   path;
+        std::string         result_msg;
+        VMF::Scene*         scene;
+    };
+
     VMFImporter();
-    ~VMFImporter();
 
-    //possible errors
-    //  invalid path
-    //  file does not exist
-    //  file is not a VMF
-    //  fatal parsing error (file is corrupt)
+    JobResult   LoadFile(const std::string filename);
 
-    VMFScene getJob(int32_t id);
+private:
+    bool        validatePath(const std::string& path) const;
+    JobResult   ImportJob(const std::string path);
+    void        ParseVMFFile(std::fstream& fs, JobResult& result);
 
-    int32_t LoadFile(std::string filename);
+    std::string getTrimmedLine(std::fstream& fs);
 
+    int64_t     ParseInteger(const std::string& str);
+    void        ParsePlane(const std::string& str, std::vector<PT::math::float3>& out_vec);
+    PT::math::float3 ParseVec3(const std::string& str);
+
+
+    void        ParseUnknownElement(std::fstream& fs, JobResult& result);
+
+    VMF::World* ParseWorld(std::fstream& fs, JobResult& result);
+    VMF::Solid* ParseSolid(std::fstream& fs, JobResult& result);
+    VMF::Side*  ParseSide(std::fstream& fs, JobResult& result);
+
+
+    std::vector<JobResult> results;
+
+    Scene*  createScene();
+    World* createWorld();
+    Solid* createSolid();
+    Side* createSide();
+
+    std::vector<Scene*> scenes;
+    std::vector<World*> worlds;
+    std::vector<Solid*> solids;
+    std::vector<Side*>  sides;
 
 };
 

@@ -1,3 +1,6 @@
 [submodule "math"]
 	path = math
 	url = ../math
+[submodule "lib/libpttoth"]
+	path = lib/libpttoth
+	url = ../../libpttoth/
